@@ -1,0 +1,27 @@
+[project]
+name = "ai-playground"
+version = "0.0.0"
+
+[tool.yapf]
+column_limit = 300
+indent_width = 2
+continuation_indent_width = 2
+spaces_before_comment = 1
+blank_line_before_class_docstring = false
+blank_line_before_module_docstring = false
+blank_line_before_nested_class_or_def = false
+blank_lines_around_top_level_definition = 1
+blank_lines_between_top_level_imports_and_variables = 1
+allow_multiline_dictionary_keys = true
+dedent_closing_brackets = true
+coalesce_brackets = true
+
+[tool.isort]
+multi_line_output = 3
+indent = "  "
+line_length = 300
+include_trailing_comma = true
+split_on_trailing_comma = true
+remove_redundant_aliases = true
+float_to_top = true
+lines_after_imports = 1
