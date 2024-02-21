@@ -5,3 +5,4 @@ transformers
 torch==2.2.0+cu121
 ruamel.yaml
 srt
+rich
