@@ -1,11 +1,13 @@
+from calendar import c
 from math import trunc
 import torch
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline, AutomaticSpeechRecognitionPipeline
+from transformers import AutoModelForSpeechSeq2Seq, AutomaticSpeechRecognitionPipeline, WhisperProcessor
 import argparse
 from pathlib import Path
 import time
 import subprocess
 from rich.console import Console
+from rich.terminal_theme import MONOKAI as terminalTheme
 
 console = Console(record=True, soft_wrap=True)
 parser = argparse.ArgumentParser()
@@ -25,8 +27,9 @@ parser.add_argument('--word-accuracy', action='store_true')
 args = parser.parse_args()
 console.out('Args:', args)
 startTime = time.time()
+Path('out/whisper').mkdir(parents=True, exist_ok=True)
 preparedInputFile = 'out/whisper/input.flac'
-result = subprocess.run([
+ffprobeResult = subprocess.run([
   'ffprobe',
   '-v',
   'error',
@@ -35,10 +38,11 @@ result = subprocess.run([
   '-of',
   'default=noprint_wrappers=1:nokey=1',
   args.input_file
-], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-inputDuration = float(result.stdout)
+], stdout=subprocess.PIPE)
+ffprobeResult.check_returncode()
+inputDuration = float(ffprobeResult.stdout)
 console.out('Input duration:', inputDuration, 'seconds')
-subprocess.run([
+ffmpegResult = subprocess.run([
   'ffmpeg',
   '-hide_banner',
   '-strict',
@@ -53,7 +57,9 @@ subprocess.run([
   '-ac',
   '1',
   preparedInputFile
-], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+])
+console.out(ffmpegResult.args, ' → ', ffmpegResult.returncode)
+ffmpegResult.check_returncode()
 console.out(f'Prepared input file {args.input_file} in {time.time() - startTime:.2f} seconds')
 startTime = time.time()
 if args.force_cuda:
@@ -84,11 +90,9 @@ model = AutoModelForSpeechSeq2Seq.from_pretrained(
   **modelLoadingOptions
 )
 model.to(device)
-processor = AutoProcessor.from_pretrained(args.model)
-console.out('Processor:', processor)
+processor = WhisperProcessor.from_pretrained(args.model)
 returnTimestamps = 'word' if args.word_accuracy else True
 pipe: AutomaticSpeechRecognitionPipeline = AutomaticSpeechRecognitionPipeline(
-  'automatic-speech-recognition',
   model=model,
   tokenizer=processor.tokenizer,
   feature_extractor=processor.feature_extractor,
@@ -113,7 +117,6 @@ def data():
         # does the preprocessing while the main runs the big inference
         yield "This is a test"
 result = pipe(
-
   preparedInputFile,
   generate_kwargs=inferenceOptions
 )
@@ -163,4 +166,12 @@ for outputFileExtension, outputFile in outputs.items():
       file.write(fileContent)
 if args.print_text:
   console.out(result['text'].strip())
-console.save_text('out/whisper/console.log', styles=True)
+console.out({
+  'model': model,
+  'pipe': pipe,
+  'processor': processor
+})
+console.save_html(
+  'out/whisper/log.html',
+  theme=terminalTheme
+)
