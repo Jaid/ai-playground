@@ -1,7 +1,7 @@
 from calendar import c
 from math import trunc
 import torch
-from transformers import AutoModelForSpeechSeq2Seq, AutomaticSpeechRecognitionPipeline, WhisperProcessor
+from transformers import AutoModelForSpeechSeq2Seq, AutomaticSpeechRecognitionPipeline, WhisperProcessor, WhisperForConditionalGeneration, WhisperConfig
 import argparse
 from pathlib import Path
 import time
@@ -39,6 +39,7 @@ ffprobeResult = subprocess.run([
   'default=noprint_wrappers=1:nokey=1',
   args.input_file
 ], stdout=subprocess.PIPE)
+console.out(ffprobeResult.args, ' → ', ffprobeResult.returncode)
 ffprobeResult.check_returncode()
 inputDuration = float(ffprobeResult.stdout)
 console.out('Input duration:', inputDuration, 'seconds')
@@ -85,12 +86,12 @@ modelLoadingOptions = {
 }
 if args.low_memory:
   modelLoadingOptions['low_cpu_mem_usage'] = True
-model = AutoModelForSpeechSeq2Seq.from_pretrained(
-  args.model,
+model: WhisperForConditionalGeneration = WhisperForConditionalGeneration.from_pretrained(
+  pretrained_model_name_or_path=args.model,
   **modelLoadingOptions
 )
 model.to(device)
-processor = WhisperProcessor.from_pretrained(args.model)
+processor: WhisperProcessor = WhisperProcessor.from_pretrained(args.model)
 returnTimestamps = 'word' if args.word_accuracy else True
 pipe: AutomaticSpeechRecognitionPipeline = AutomaticSpeechRecognitionPipeline(
   model=model,
@@ -101,7 +102,11 @@ pipe: AutomaticSpeechRecognitionPipeline = AutomaticSpeechRecognitionPipeline(
   batch_size=args.batch_size,
   return_timestamps=returnTimestamps,
   torch_dtype=torchDtype,
-  device=device,
+  device=torch.device(device),
+)
+inputFeatures = processor(
+  file=preparedInputFile,
+  return_tensors='pt'
 )
 inferenceOptions = {}
 if args.language:
@@ -109,13 +114,13 @@ if args.language:
 console.out(f'Prepared model in {round(time.time() - startTime, 2)} seconds')
 startTime = time.time()
 def data():
-    while True:
-        # This could come from a dataset, a database, a queue or HTTP request
-        # in a server
-        # Caveat: because this is iterative, you cannot use `num_workers > 1` variable
-        # to use multiple threads to preprocess data. You can still have 1 thread that
-        # does the preprocessing while the main runs the big inference
-        yield "This is a test"
+  while True:
+      # This could come from a dataset, a database, a queue or HTTP request
+      # in a server
+      # Caveat: because this is iterative, you cannot use `num_workers > 1` variable
+      # to use multiple threads to preprocess data. You can still have 1 thread that
+      # does the preprocessing while the main runs the big inference
+      yield "This is a test"
 result = pipe(
   preparedInputFile,
   generate_kwargs=inferenceOptions

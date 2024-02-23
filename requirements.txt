@@ -5,4 +5,10 @@ accelerate
 numpy
 safetensors
 transformers
-torch==2.2.0+cu121
+torch==2.2.1+cu121
+optimum
+
+ipykernel
+pandas
+ipywidgets
+pyarrow
