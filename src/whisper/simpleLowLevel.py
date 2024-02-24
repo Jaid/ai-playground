@@ -19,7 +19,7 @@ try:
     torch_dtype=torchDtype,
     attn_implementation='eager'
   ) # type: ignore
-  model.to(device)
+  model.to(device) # type: ignore
   tokenizer: WhisperTokenizer = WhisperTokenizer.from_pretrained(
     modelId,
     predict_timestamps=True
