@@ -66,9 +66,7 @@ try:
       '-i',
       args.input_file,
       '-af',
-      f'aresample=resampler=soxr:precision={args.resample_quality}:osr=16000',
-      '-ac',
-      '1',
+      f'aresample=resampler=soxr:precision={args.resample_quality}:dither_method=improved_e_weighted:out_sample_rate=16000:out_chlayout=mono',
       preparedInputFile
     ])
     console.out(ffmpegResult.args, ' → ', ffmpegResult.returncode)
