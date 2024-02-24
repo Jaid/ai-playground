@@ -8,7 +8,9 @@ import time
 import subprocess
 from rich.console import Console
 from rich.terminal_theme import MONOKAI as terminalTheme
+from rich._export_format import CONSOLE_HTML_FORMAT as richHtmlExportFormat
 from typing import List, Tuple, TypedDict
+import re
 
 Timestamp = Tuple[float, float]
 class Chunk(TypedDict):
@@ -240,26 +242,9 @@ except Exception as e:
   raise e
 finally:
   console.out(locals())
-  CONSOLE_HTML_FORMAT = """\
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <meta charset=UTF-8>
-    <style>
-      {stylesheet}
-      body {{
-        color: {foreground};
-        background-color: {background};
-      }}
-    </style>
-  </head>
-    <body>
-      <pre><code style='text-wrap: wrap; font-family:JetBrainsMono NF,monospace'>{code}</code></pre>
-    </body>
-  </html>
-  """
+  htmlFormat = re.sub('<pre .+', '<pre><code style="text-wrap: wrap; font-family:JetBrainsMono NF, JetBrains Mono, Symbols Nerd Font Mono, Symbols Nerd Font Mono Regular, monospace">{code}</code></pre>', richHtmlExportFormat)
   console.save_html(
     outFolder.joinpath('log.html').as_posix(),
     theme=terminalTheme,
-    code_format=CONSOLE_HTML_FORMAT
+    code_format=htmlFormat
   )
