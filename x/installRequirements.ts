@@ -3,7 +3,7 @@ import os from 'node:os'
 import {$} from 'execa'
 import fs from 'fs-extra'
 import {globby} from 'globby'
-import path from 'forward-slash-path'
+import * as path from 'forward-slash-path'
 
 const venvFolder = path.join(`.venv`)
 const venvFolderExists = await fs.pathExists(venvFolder)

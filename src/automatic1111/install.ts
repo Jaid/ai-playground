@@ -1,8 +1,9 @@
 import {fileURLToPath} from 'node:url'
 
-import {$} from 'execa'
-import path from 'forward-slash-path'
+import * as path from 'forward-slash-path'
 import fs from 'fs-extra'
+
+import {$verbose} from 'lib/execa.js'
 
 const automatic1111Slug = `automatic1111/stable-diffusion-webui`
 const forgeSlug = `lllyasviel/stable-diffusion-webui-forge`
@@ -10,11 +11,6 @@ const automatic1111Branch = `master`
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootFolder = path.join(dirname, `..`, `..`)
 const venvFolder = path.join(rootFolder, `.venv`)
-const $verbose = $({
-  stderr: `inherit`,
-  stdin: `ignore`,
-  stdout: `inherit`,
-})
 const repoFolder = path.join(dirname, `git`, `automatic1111`)
 const gitArgs = [
   `-C`,

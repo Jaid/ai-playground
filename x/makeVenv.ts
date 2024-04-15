@@ -1,6 +1,6 @@
 import {$} from 'execa'
 import fs from 'fs-extra'
-import path from 'forward-slash-path'
+import * as path from 'forward-slash-path'
 
 const pythonMajor = 3
 const pythonMinor = 11
