@@ -9,11 +9,11 @@
     "fs-extra": "^11.2.0",
     "globby": "^14.0.1",
     "rollup-config-factory": "^0.3.0",
-    "tsconfig-jaid-node": "^6.1.1",
+    "tsconfig-jaid-node": "^8.1.0",
     "tsx": "^4.7.2",
     "typescript": "^5.4.5",
     "wireit": "^0.14.4",
-    "zeug": "^0.4.0"
+    "zeug": "^1.0.0"
   },
   "scripts": {
     "start": "printf 'No %s script specified\\n' $npm_lifecycle_event >&2",
