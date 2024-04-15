@@ -36,7 +36,7 @@ const requirementsArgs = requirementsFiles.reduce<string[]>((acc, file) => {
   acc.push(file)
   return acc
 }, [])
-await $verbose`${pipBase} install ${requirementsArgs}`
+await $verbose`${pipBase} install --upgrade ${requirementsArgs}`
 const hasFlashAttn = await hasPackage(`flash-attn`)
 if (!hasFlashAttn) {
   await $verbose({
@@ -49,5 +49,5 @@ const hasTensorRt = await hasPackage(`tensorrt`)
 if (!hasTensorRt) {
   await $verbose`${pipBase} install --no-cache-dir nvidia-cudnn-cu11`
   await $verbose`${pipBase} install --pre --extra-index-url https://pypi.nvidia.com tensorrt==9.3.0.post12.dev1`
-  await $verbose`${pipBase} uninstall -y nvidia-cudnn-cu11`
+  // await $verbose`${pipBase} uninstall -y nvidia-cudnn-cu11`
 }

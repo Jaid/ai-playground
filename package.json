@@ -12,7 +12,7 @@
     "tsx": "^4.7.1",
     "typescript": "^5.3.3",
     "wireit": "^0.14.4",
-    "zeug": "jaid/zeug#tsc"
+    "zeug": "^0.4.0"
   },
   "scripts": {
     "start": "printf 'No %s script specified\\n' $npm_lifecycle_event >&2",
