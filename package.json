@@ -2,19 +2,6 @@
   "name": "ai-playground",
   "version": "0.0.0",
   "type": "module",
-  "devDependencies": {
-    "@types/node": "^20.12.7",
-    "eslint-config-jaid": "^8.24.0",
-    "execa": "^8.0.1",
-    "fs-extra": "^11.2.0",
-    "globby": "^14.0.1",
-    "rollup-config-factory": "^0.3.0",
-    "tsconfig-jaid-node": "^8.1.0",
-    "tsx": "^4.7.2",
-    "typescript": "^5.4.5",
-    "wireit": "^0.14.4",
-    "zeug": "^1.0.0"
-  },
   "scripts": {
     "start": "printf 'No %s script specified\\n' $npm_lifecycle_event >&2",
     "build": "printf 'No %s script specified\\n' $npm_lifecycle_event >&2",
@@ -40,5 +27,18 @@
       },
       "command": "node --import dotenv/config --import tsx x/installRequirements.ts"
     }
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "eslint-config-jaid": "^8.24.0",
+    "execa": "^8.0.1",
+    "fs-extra": "^11.2.0",
+    "globby": "^14.0.1",
+    "rollup-config-factory": "^0.3.0",
+    "tsconfig-jaid-node": "^8.1.0",
+    "tsx": "^4.7.2",
+    "typescript": "^5.4.5",
+    "wireit": "^0.14.4",
+    "zeug": "^1.0.0"
   }
 }
