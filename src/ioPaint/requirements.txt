@@ -1,0 +1,40 @@
+# typer-config
+# loguru
+# diffusers
+# peft
+# rich
+# yacs
+# omegaconf
+# easydict
+# python-multipart
+# python-socketio
+# rembg
+# controlnet-aux
+# fastapi
+# typer
+# piexif
+# Pillow
+
+torch
+opencv-python
+diffusers
+accelerate
+peft
+transformers
+safetensors
+controlnet-aux
+fastapi
+uvicorn
+python-multipart
+python-socketio
+typer
+pydantic
+rich
+loguru
+yacs
+piexif
+omegaconf
+easydict
+gradio
+typer-config
+Pillow
