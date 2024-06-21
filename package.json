@@ -29,17 +29,17 @@
     }
   },
   "devDependencies": {
-    "@types/node": "^20.12.7",
-    "eslint-config-jaid": "^8.24.0",
-    "execa": "^8.0.1",
+    "@types/node": "^20.14.7",
+    "eslint-config-jaid": "^10.5.1",
+    "execa": "^9.2.0",
     "forward-slash-path": "^0.3.0",
     "fs-extra": "^11.2.0",
     "globby": "^14.0.1",
-    "rollup-config-factory": "^0.3.0",
+    "rollup-config-factory": "^0.4.1",
     "tsconfig-jaid-node": "^8.1.0",
-    "tsx": "^4.7.2",
-    "typescript": "^5.4.5",
+    "tsx": "^4.15.7",
+    "typescript": "^5.5.2",
     "wireit": "^0.14.4",
-    "zeug": "^1.0.0"
+    "zeug": "^2.0.0"
   }
 }
